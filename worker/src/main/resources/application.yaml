@@ -1,0 +1,22 @@
+server:
+  port: 8256
+
+spring:
+  main:
+    banner-mode: off
+  datasource:
+    url: jdbc:postgresql://localhost:5432/version_checker
+    driver-class-name: org.postgresql.Driver
+    username: sync
+    password: changeme
+    hikari:
+      maximum-pool-size: 5
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      naming:
+        physical-strategy: com.vladmihalcea.hibernate.naming.CamelCaseToSnakeCaseNamingStrategy
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+      ddl-auto: validate
+  liquibase:
+    change-log: db/changelog/changelog.yml

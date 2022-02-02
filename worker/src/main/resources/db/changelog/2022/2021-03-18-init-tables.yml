@@ -1,0 +1,106 @@
+databaseChangeLog:
+  - changeSet:
+      id: "1"
+      author: alexromantrue@gmail.com
+      comment: Create table repository
+      preConditions:
+        - onFail: MARK_RAN
+        - onError: CONTINUE
+        - not:
+            - tableExists:
+                tableName: repository
+      changes:
+        - createTable:
+            tableName: repository
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: created
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated
+                  type: timestamp
+              - column:
+                  name: url
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: scan_type
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: "2"
+      author: alexromantrue@gmail.com
+      comment: Create table artifact
+      preConditions:
+        - onFail: MARK_RAN
+        - onError: CONTINUE
+        - not:
+            - tableExists:
+                tableName: artifact
+      changes:
+        - createTable:
+            tableName: artifact
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: created
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: repository_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: "3"
+      author: alexromantrue@gmail.com
+      comment: Create foreign key in table artifact on column repository_id
+      preConditions:
+        - onFail: MARK_RAN
+        - onError: CONTINUE
+        - not:
+            - foreignKeyConstraintExists:
+                foreignKeyTableName: artifact
+                foreignKeyName: artifact_repository_id_fk
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: repository_id
+            baseTableName: artifact
+            constraintName: artifact_repository_id_fk
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: repository
